@@ -28,12 +28,6 @@
     <version>1.2.0-SNAPSHOT</version>
   </parent>
 
-  <parent>
-    <groupId>org.openengsb.connector</groupId>
-    <artifactId>openengsb-connector-parent</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
-  </parent>
-
   <properties>
     <bundle.symbolicName>org.openengsb.connector.gcalendar</bundle.symbolicName>
     <bundle.namespace>org.openengsb.connector.gcalendar</bundle.namespace>
@@ -87,9 +81,9 @@
     <dependency>
       <groupId>org.openengsb.domain</groupId>
       <artifactId>openengsb-domain-appointment</artifactId>
+      <version>${openengsb.version}</version>
       <scope>provided</scope>
     </dependency>
-    
     <dependency>
       <groupId>com.google.gdata</groupId>
       <artifactId>gdata-calendar-2.0</artifactId>
