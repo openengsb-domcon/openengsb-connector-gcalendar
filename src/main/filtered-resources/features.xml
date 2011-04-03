@@ -18,14 +18,14 @@
 
 -->
 
-<features name="openengsb-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.0.0"
+<features name="openengsb-connector-gcalendar-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://karaf.apache.org/xmlns/features/v1.0.0 http://karaf.apache.org/xmlns/features/v1.0.0" >
-  <feature name="openengsb-connector-email" version="${project.version}" >
+  <feature name="openengsb-connector-gcalendar" version="${project.version}">
     <feature version="${openengsb.version.range}">openengsb-core</feature>
-    <feature version="${openengsb.version.range}">openengsb-domain-notification</feature>
-    <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax.mail/${javax.mail.version}</bundle>
-    <bundle>mvn:org.openengsb.connector/openengsb-connector-email/${project.version}</bundle>
+    <feature version="${openengsb.version.range}">openengsb-domain-appointment</feature>
+    <bundle>mvn:org.openengsb.wrapped/com.google.gdata-calendar/${google.calendar.wrapped.version}</bundle>
+    <bundle>mvn:org.openengsb.connector/openengsb-connector-gcalendar/${project.version}</bundle>
   </feature>
 </features>
 
