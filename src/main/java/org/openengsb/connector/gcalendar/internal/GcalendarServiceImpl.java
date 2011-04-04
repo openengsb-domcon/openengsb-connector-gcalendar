@@ -61,7 +61,7 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBService implements Ap
         try {
             login();
             URL postUrl =
-                new URL("https://www.google.com/calendar/feeds/" + googleUser + "/private/full");
+                new URL("https://www.google.com/calendar/feeds/default/private/full");
             CalendarEventEntry myEntry = AppointmentConverter.convertAppointmentToCalendarEventEntry(appointment);
 
             // Send the request and receive the response:
@@ -70,7 +70,8 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBService implements Ap
             log.info("Successfully created appointment " + id);
             appointment.setId(id);
         } catch (MalformedURLException e) {
-            throw new DomainMethodExecutionException("unknown type of URL", e);
+            // should never be thrown since the URL is static
+            throw new DomainMethodExecutionException("invalid URL", e);
         } catch (IOException e) {
             throw new DomainMethodExecutionException("unable to connect to the google server", e);
         } catch (ServiceException e) {
@@ -90,7 +91,8 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBService implements Ap
             URL editUrl = new URL(entry.getEditLink().getHref());
             service.update(editUrl, entry);
         } catch (MalformedURLException e) {
-            throw new DomainMethodExecutionException("unknown type of URL", e);
+            // should never be thrown since the url is provided by google
+            throw new DomainMethodExecutionException("invalid URL", e);
         } catch (IOException e) {
             throw new DomainMethodExecutionException("unable to connect to the google server", e);
         } catch (ServiceException e) {
@@ -139,7 +141,7 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBService implements Ap
                 log.error("given appointment has no id");
             }
         } catch (MalformedURLException e) {
-            throw new DomainMethodExecutionException("unknown type of URL", e);
+            throw new DomainMethodExecutionException("invalid id, id must be an url to contact", e);
         } catch (IOException e) {
             throw new DomainMethodExecutionException("unable to connect to the google server", e);
         } catch (ServiceException e) {
@@ -167,7 +169,8 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBService implements Ap
             CalendarEventFeed resultFeed = service.query(myQuery, CalendarEventFeed.class);
             return resultFeed.getEntries();
         } catch (MalformedURLException e) {
-            throw new DomainMethodExecutionException("unknown type of URL", e);
+            // should never be thrown since the URL is static
+            throw new DomainMethodExecutionException("invalid URL", e);
         } catch (IOException e) {
             throw new DomainMethodExecutionException("unable to connect to the google server", e);
         } catch (ServiceException e) {
