@@ -24,14 +24,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openengsb.connector.gcalendar.internal.misc.AppointmentConverter;
 import org.openengsb.core.api.AliveState;
 import org.openengsb.core.api.DomainMethodExecutionException;
 import org.openengsb.core.common.AbstractOpenEngSBService;
 import org.openengsb.domain.appointment.AppointmentDomain;
 import org.openengsb.domain.appointment.models.Appointment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gdata.client.calendar.CalendarQuery;
 import com.google.gdata.client.calendar.CalendarService;
@@ -43,7 +43,7 @@ import com.google.gdata.util.ServiceException;
 
 public class GcalendarServiceImpl extends AbstractOpenEngSBService implements AppointmentDomain {
 
-    private static Log log = LogFactory.getLog(GcalendarServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GcalendarServiceImpl.class);
 
     private AliveState state = AliveState.DISCONNECTED;
     private String googleUser;
@@ -67,7 +67,7 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBService implements Ap
             // Send the request and receive the response:
             CalendarEventEntry insertedEntry = service.insert(postUrl, myEntry);
             id = insertedEntry.getEditLink().getHref();
-            log.info("Successfully created appointment " + id);
+            LOGGER.info("Successfully created appointment {}", id);
             appointment.setId(id);
         } catch (MalformedURLException e) {
             // should never be thrown since the URL is static
@@ -138,7 +138,7 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBService implements Ap
                     (CalendarEventEntry) service.getEntry(new URL(appointment.getId()), CalendarEventEntry.class);
                 return entry;
             } else {
-                log.error("given appointment has no id");
+                LOGGER.error("given appointment has no id");
             }
         } catch (MalformedURLException e) {
             throw new DomainMethodExecutionException("invalid id, id must be an url to contact", e);
