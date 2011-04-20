@@ -17,55 +17,22 @@
 
 package org.openengsb.connector.gcalendar.internal;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import org.openengsb.core.api.ServiceInstanceFactory;
-import org.openengsb.core.api.descriptor.ServiceDescriptor;
-import org.openengsb.core.api.validation.MultipleAttributeValidationResult;
-import org.openengsb.core.api.validation.MultipleAttributeValidationResultImpl;
-import org.openengsb.domain.appointment.AppointmentDomain;
+import org.openengsb.core.api.Domain;
+import org.openengsb.core.common.AbstractConnectorInstanceFactory;
 
-public class GcalendarServiceInstanceFactory
-        implements ServiceInstanceFactory<AppointmentDomain, GcalendarServiceImpl> {
+public class GcalendarServiceInstanceFactory extends AbstractConnectorInstanceFactory<GcalendarServiceImpl> {
 
-    public GcalendarServiceInstanceFactory() {
+    @Override
+    public Domain createNewInstance(String id) {
+        return new GcalendarServiceImpl(id);
     }
 
     @Override
-    public ServiceDescriptor getDescriptor(ServiceDescriptor.Builder builder) {
-        builder.name("service.name").description("service.description");
-
-        builder.attribute(
-            builder.newAttribute().id("google.user").name("google.user.name").description("google.user.description")
-                .build());
-        builder.attribute(builder.newAttribute().id("google.password").name("google.password.name")
-            .description("google.password.description").asPassword().build());
-
-        return builder.build();
-    }
-
-    @Override
-    public void updateServiceInstance(GcalendarServiceImpl instance, Map<String, String> attributes) {
+    public void doApplyAttributes(GcalendarServiceImpl instance, Map<String, String> attributes) {
         instance.setGoogleUser(attributes.get("google.user"));
         instance.setGooglePassword(attributes.get("google.password"));
     }
 
-    @Override
-    public MultipleAttributeValidationResult updateValidation(GcalendarServiceImpl instance,
-            Map<String, String> attributes) {
-        return new MultipleAttributeValidationResultImpl(true, new HashMap<String, String>());
-    }
-
-    @Override
-    public GcalendarServiceImpl createServiceInstance(String id, Map<String, String> attributes) {
-        GcalendarServiceImpl service = new GcalendarServiceImpl(id);
-        updateServiceInstance(service, attributes);
-        return service;
-    }
-
-    @Override
-    public MultipleAttributeValidationResult createValidation(String id, Map<String, String> attributes) {
-        return new MultipleAttributeValidationResultImpl(true, new HashMap<String, String>());
-    }
 }
