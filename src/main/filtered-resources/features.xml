@@ -24,7 +24,7 @@
   <feature name="openengsb-connector-gcalendar" version="${project.version}">
     <feature version="${openengsb.version.range}">openengsb-core</feature>
     <feature version="${openengsb.version.range}">openengsb-domain-appointment</feature>
-    <bundle>mvn:org.openengsb.wrapped/com.google.gdata-calendar/${google.calendar.wrapped.version}</bundle>
+    <bundle>mvn:org.openengsb.wrapped/com.google.gdata/${google.calendar.wrapped.version}</bundle>
     <bundle>mvn:org.openengsb.connector/openengsb-connector-gcalendar/${project.version}</bundle>
   </feature>
 </features>
