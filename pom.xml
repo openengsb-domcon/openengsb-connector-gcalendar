@@ -33,7 +33,9 @@
     <bundle.symbolicName>org.openengsb.connector.gcalendar</bundle.symbolicName>
     <bundle.namespace>org.openengsb.connector.gcalendar</bundle.namespace>
     <google.calendar.version>1.41.5</google.calendar.version>
-    <google.calendar.wrapped.version>${google.calendar.version}.w1</google.calendar.wrapped.version>
+    <google.gdata.wrapped.version>1.41.5.w1</google.gdata.wrapped.version>
+    <openengsb.domain.appointment.version>1.2.0-SNAPSHOT</openengsb.domain.appointment.version>
+    <openengsb.domain.appointment.range>(1.2.0,1.3.0]</openengsb.domain.appointment.range>
   </properties>
 
   <groupId>org.openengsb.connector</groupId>
@@ -72,6 +74,7 @@
   </build>
 
   <dependencies>
+    <!-- OpenEngSB References -->
     <dependency>
       <groupId>org.openengsb.core</groupId>
       <artifactId>openengsb-core-api</artifactId>
@@ -87,12 +90,16 @@
       <artifactId>openengsb-core-test</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <!-- Appointment Domain References -->
     <dependency>
       <groupId>org.openengsb.domain</groupId>
       <artifactId>openengsb-domain-appointment</artifactId>
-      <version>${openengsb.version}</version>
+      <version>${openengsb.domain.appointment.version}</version>
       <scope>provided</scope>
     </dependency>
+
+    <!-- Library References -->
     <dependency>
       <groupId>com.google.gdata</groupId>
       <artifactId>gdata-calendar-2.0</artifactId>
