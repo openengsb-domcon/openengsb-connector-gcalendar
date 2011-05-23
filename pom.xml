@@ -33,8 +33,8 @@
     <bundle.namespace>org.openengsb.connector.gcalendar</bundle.namespace>
     <google.calendar.version>1.41.5</google.calendar.version>
     <google.gdata.wrapped.version>1.41.5.w1</google.gdata.wrapped.version>
-    <openengsb.domain.appointment.version>1.2.0</openengsb.domain.appointment.version>
-    <openengsb.domain.appointment.range>[1.2,1.3)</openengsb.domain.appointment.range>
+    <openengsb.domain.version>1.2.1</openengsb.domain.version>
+    <openengsb.domain.range>[1.2,1.3)</openengsb.domain.range>
   </properties>
 
   <groupId>org.openengsb.connector</groupId>
@@ -64,10 +64,46 @@
   </scm>
 
   <build>
+    <resources>
+      <resource>
+        <directory>${project.basedir}/src/main/resources</directory>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>${project.basedir}/src/main/filtered-resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>${project.basedir}/src/main/resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>**/*.info</include>
+        </includes>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Import-Package>
+              ${openengsb.imports},
+              org.openengsb.domain.appointment.*;version="${openengsb.domain.range}",
+              *
+            </Import-Package>
+          </instructions>
+        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -94,7 +130,7 @@
     <dependency>
       <groupId>org.openengsb.domain</groupId>
       <artifactId>openengsb-domain-appointment</artifactId>
-      <version>${openengsb.domain.appointment.version}</version>
+      <version>${openengsb.domain.version}</version>
       <scope>provided</scope>
     </dependency>
 
