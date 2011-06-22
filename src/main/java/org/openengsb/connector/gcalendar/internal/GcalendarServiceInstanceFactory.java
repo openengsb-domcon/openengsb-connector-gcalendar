@@ -21,12 +21,17 @@ import java.util.Map;
 
 import org.openengsb.core.api.Domain;
 import org.openengsb.core.common.AbstractConnectorInstanceFactory;
+import org.openengsb.domain.appointment.AppointmentDomainEvents;
 
 public class GcalendarServiceInstanceFactory extends AbstractConnectorInstanceFactory<GcalendarServiceImpl> {
 
+    private AppointmentDomainEvents appointmentEvents;
+
     @Override
     public Domain createNewInstance(String id) {
-        return new GcalendarServiceImpl(id);
+        GcalendarServiceImpl service = new GcalendarServiceImpl(id);
+        service.setAppointmentEvents(appointmentEvents);
+        return service;
     }
 
     @Override
@@ -35,4 +40,7 @@ public class GcalendarServiceInstanceFactory extends AbstractConnectorInstanceFa
         instance.setGooglePassword(attributes.get("google.password"));
     }
 
+    public void setAppointmentEvents(AppointmentDomainEvents appointmentEvents) {
+        this.appointmentEvents = appointmentEvents;
+    }
 }
