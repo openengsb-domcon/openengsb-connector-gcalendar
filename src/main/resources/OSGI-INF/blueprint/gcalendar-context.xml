@@ -29,7 +29,9 @@
       <entry key="domain" value="appointment" />
       <entry key="connector" value="gcalendar" />
     </service-properties>
-    <bean class="org.openengsb.connector.gcalendar.internal.GcalendarServiceInstanceFactory" />
+    <bean class="org.openengsb.connector.gcalendar.internal.GcalendarServiceInstanceFactory">
+      <property name="appointmentEvents" ref="appointmentEvents" />
+    </bean>
   </service>
 
   <service>
@@ -45,5 +47,7 @@
       <property name="bundleContext" ref="blueprintBundleContext" />
     </bean>
   </service>
+  
+  <reference id="appointmentEvents" interface="org.openengsb.domain.appointment.AppointmentDomainEvents" />
 
 </blueprint>
