@@ -31,7 +31,7 @@ public class TestAppointmentModel implements Appointment {
     private String location;
     private Date start;
     private Date end;
-    private boolean fullDay;
+    private Boolean fullDay;
 
     @Override
     public List<OpenEngSBModelEntry> getOpenEngSBModelEntries() {
@@ -107,12 +107,12 @@ public class TestAppointmentModel implements Appointment {
     }
 
     @Override
-    public void setFullDay(boolean fullDay) {
+    public void setFullDay(Boolean fullDay) {
         this.fullDay = fullDay;
     }
 
     @Override
-    public boolean isFullDay() {
+    public Boolean getFullDay() {
         return fullDay;
     }
 }
