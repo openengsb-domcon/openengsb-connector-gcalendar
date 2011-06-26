@@ -29,6 +29,7 @@ import org.openengsb.core.api.AliveState;
 import org.openengsb.core.api.DomainMethodExecutionException;
 import org.openengsb.core.api.edb.EDBEventType;
 import org.openengsb.core.api.edb.EDBException;
+import org.openengsb.core.api.ekb.EngineeringKnowlegeBaseService;
 import org.openengsb.core.common.AbstractOpenEngSBConnectorService;
 import org.openengsb.domain.appointment.AppointmentDomain;
 import org.openengsb.domain.appointment.AppointmentDomainEvents;
@@ -49,6 +50,7 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBConnectorService impl
     private static final Logger LOGGER = LoggerFactory.getLogger(GcalendarServiceImpl.class);
 
     private AppointmentDomainEvents appointmentEvents;
+    private EngineeringKnowlegeBaseService ekbService;
 
     private AliveState state = AliveState.DISCONNECTED;
     private String googleUser;
@@ -115,7 +117,7 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBConnectorService impl
     public void deleteAppointment(String id) {
         try {
             login();
-            Appointment appointment = new Appointment();
+            Appointment appointment = ekbService.createEmptyModelObject(Appointment.class);
             appointment.setId(id);
 
             CalendarEventEntry entry = getAppointmentEntry(appointment);
@@ -133,7 +135,7 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBConnectorService impl
 
     @Override
     public Appointment loadAppointment(String id) {
-        Appointment appointment = new Appointment();
+        Appointment appointment = ekbService.createEmptyModelObject(Appointment.class);
         appointment.setId(id);
         CalendarEventEntry entry = getAppointmentEntry(appointment);
         return AppointmentConverter.convertCalendarEventEntryToAppointment(entry);
@@ -252,5 +254,10 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBConnectorService impl
 
     public void setAppointmentEvents(AppointmentDomainEvents appointmentEvents) {
         this.appointmentEvents = appointmentEvents;
+    }
+    
+    public void setEkbService(EngineeringKnowlegeBaseService ekbService) {
+        this.ekbService = ekbService;
+        AppointmentConverter.setEkbService(ekbService);
     }
 }
