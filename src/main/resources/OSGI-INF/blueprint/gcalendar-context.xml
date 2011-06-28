@@ -50,6 +50,6 @@
   </service>
   
   <reference id="appointmentEvents" interface="org.openengsb.domain.appointment.AppointmentDomainEvents" />
-  <reference id="ekbService" interface="org.openengsb.core.api.ekb.EngineeringKnowlegeBaseService" />
+  <reference id="ekbService" interface="org.openengsb.core.api.ekb.EngineeringKnowledgeBaseService" />
 
 </blueprint>

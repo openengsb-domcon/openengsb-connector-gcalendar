@@ -32,7 +32,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.openengsb.core.api.ekb.EngineeringKnowlegeBaseService;
+import org.openengsb.core.api.ekb.EngineeringKnowledgeBaseService;
 import org.openengsb.domain.appointment.AppointmentDomainEvents;
 import org.openengsb.domain.appointment.models.Appointment;
 
@@ -49,7 +49,7 @@ public class GcalendarServiceTestUT {
         service.setGoogleUser(USERNAME);
         service.setGooglePassword(PASSWORD);
         
-        EngineeringKnowlegeBaseService ekbService = mock(EngineeringKnowlegeBaseService.class);
+        EngineeringKnowledgeBaseService ekbService = mock(EngineeringKnowledgeBaseService.class);
         doAnswer(new Answer<Object>() {
             public Object answer(InvocationOnMock invocation) {
                 return new TestAppointmentModel();

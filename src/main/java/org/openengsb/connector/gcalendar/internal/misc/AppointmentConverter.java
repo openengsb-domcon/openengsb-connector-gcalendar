@@ -20,7 +20,7 @@ package org.openengsb.connector.gcalendar.internal.misc;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.openengsb.core.api.ekb.EngineeringKnowlegeBaseService;
+import org.openengsb.core.api.ekb.EngineeringKnowledgeBaseService;
 import org.openengsb.domain.appointment.models.Appointment;
 
 import com.google.gdata.data.DateTime;
@@ -35,7 +35,7 @@ import com.google.gdata.data.extensions.Where;
  */
 public final class AppointmentConverter {
     
-    private static EngineeringKnowlegeBaseService ekbService;
+    private static EngineeringKnowledgeBaseService ekbService;
 
     private AppointmentConverter() {
     }
@@ -93,7 +93,7 @@ public final class AppointmentConverter {
         return entry;
     }
     
-    public static void setEkbService(EngineeringKnowlegeBaseService ekbService) {
+    public static void setEkbService(EngineeringKnowledgeBaseService ekbService) {
         AppointmentConverter.ekbService = ekbService;
     }
 }
