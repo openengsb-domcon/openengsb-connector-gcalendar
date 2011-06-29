@@ -227,10 +227,9 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBConnectorService impl
      */
     private void sendEvent(EDBEventType type, Appointment appointment) {
         String savingName = "gcalendar/" + googleUser + "/" + appointment.getId();
-        String committer = "gcalendar-connector";
         String role = "connector";
         try {
-            sendEDBEvent(type, appointment, appointmentEvents, savingName, committer, role);
+            sendEDBEvent(type, appointment, appointmentEvents, savingName, role);
         } catch (EDBException e) {
             throw new DomainMethodExecutionException(e);
         }
