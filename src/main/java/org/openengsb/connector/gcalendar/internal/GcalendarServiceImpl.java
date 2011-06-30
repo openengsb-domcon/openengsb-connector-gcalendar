@@ -226,10 +226,10 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBConnectorService impl
      * role are defined here.
      */
     private void sendEvent(EDBEventType type, Appointment appointment) {
-        String savingName = "gcalendar/" + googleUser + "/" + appointment.getId();
+        String oid = "gcalendar/" + googleUser + "/" + appointment.getId();
         String role = "connector";
         try {
-            sendEDBEvent(type, appointment, appointmentEvents, savingName, role);
+            sendEDBEvent(type, appointment, appointmentEvents, oid, role);
         } catch (EDBException e) {
             throw new DomainMethodExecutionException(e);
         }

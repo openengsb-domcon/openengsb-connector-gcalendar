@@ -19,7 +19,7 @@ package org.openengsb.connector.gcalendar.internal;
 
 import java.util.Map;
 
-import org.openengsb.core.api.Domain;
+import org.openengsb.core.api.Connector;
 import org.openengsb.core.api.ekb.EngineeringKnowledgeBaseService;
 import org.openengsb.core.common.AbstractConnectorInstanceFactory;
 import org.openengsb.domain.appointment.AppointmentDomainEvents;
@@ -30,13 +30,13 @@ public class GcalendarServiceInstanceFactory extends AbstractConnectorInstanceFa
     private EngineeringKnowledgeBaseService ekbService;
 
     @Override
-    public Domain createNewInstance(String id) {
+    public Connector createNewInstance(String id) {
         GcalendarServiceImpl service = new GcalendarServiceImpl(id);
         service.setAppointmentEvents(appointmentEvents);
         service.setEkbService(ekbService);
 
-        service.setDomainId(getDomainId());
-        service.setConnectorId(getConnectorId());
+//        service.setDomainId(getDomainId());
+//        service.setConnectorId(getConnectorId());
 
         return service;
     }
