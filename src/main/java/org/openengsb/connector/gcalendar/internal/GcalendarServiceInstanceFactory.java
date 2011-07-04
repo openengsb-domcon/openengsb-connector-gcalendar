@@ -34,10 +34,6 @@ public class GcalendarServiceInstanceFactory extends AbstractConnectorInstanceFa
         GcalendarServiceImpl service = new GcalendarServiceImpl(id);
         service.setAppointmentEvents(appointmentEvents);
         service.setEkbService(ekbService);
-
-//        service.setDomainId(getDomainId());
-//        service.setConnectorId(getConnectorId());
-
         return service;
     }
 
