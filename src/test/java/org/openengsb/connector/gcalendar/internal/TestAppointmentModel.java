@@ -19,7 +19,9 @@ package org.openengsb.connector.gcalendar.internal;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.openengsb.core.api.model.OpenEngSBModelEntry;
 import org.openengsb.domain.appointment.models.Appointment;
@@ -32,18 +34,31 @@ public class TestAppointmentModel implements Appointment {
     private Date start;
     private Date end;
     private Boolean fullDay;
+    
+    private Map<String, OpenEngSBModelEntry> entries = new HashMap<String, OpenEngSBModelEntry>();
 
     @Override
     public List<OpenEngSBModelEntry> getOpenEngSBModelEntries() {
-        List<OpenEngSBModelEntry> entries = new ArrayList<OpenEngSBModelEntry>();
-        entries.add(new OpenEngSBModelEntry("id", id, String.class));
-        entries.add(new OpenEngSBModelEntry("name", name, String.class));
-        entries.add(new OpenEngSBModelEntry("description", description, String.class));
-        entries.add(new OpenEngSBModelEntry("location", location, String.class));
-        entries.add(new OpenEngSBModelEntry("start", start, Date.class));
-        entries.add(new OpenEngSBModelEntry("end", end, Date.class));
-        entries.add(new OpenEngSBModelEntry("fullDay", fullDay, Boolean.class));
-        return entries;
+        List<OpenEngSBModelEntry> e = new ArrayList<OpenEngSBModelEntry>();
+        e.add(new OpenEngSBModelEntry("id", id, String.class));
+        e.add(new OpenEngSBModelEntry("name", name, String.class));
+        e.add(new OpenEngSBModelEntry("description", description, String.class));
+        e.add(new OpenEngSBModelEntry("location", location, String.class));
+        e.add(new OpenEngSBModelEntry("start", start, Date.class));
+        e.add(new OpenEngSBModelEntry("end", end, Date.class));
+        e.add(new OpenEngSBModelEntry("fullDay", fullDay, Boolean.class));
+        e.addAll(entries.values());
+        return e;
+    }
+    
+    @Override
+    public void addOpenEngSBModelEntry(OpenEngSBModelEntry entry) {
+        entries.put(entry.getKey(), entry);
+    }
+    
+    @Override
+    public void removeOpenEngSBModelEntry(String key) {
+        entries.remove(key);
     }
 
     @Override
