@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
-import org.openengsb.core.api.Domain;
+import org.openengsb.core.api.Connector;
 
 public class GcalendarServiceInstanceFactoryTest {
 
@@ -32,7 +32,7 @@ public class GcalendarServiceInstanceFactoryTest {
     public void testUpdateServiceInstance() throws Exception {
         GcalendarServiceInstanceFactory gsif = new GcalendarServiceInstanceFactory();
         Map<String, String> attributes = new HashMap<String, String>();
-        Domain instance = gsif.createNewInstance("id");
+        Connector instance = gsif.createNewInstance("id");
         gsif.applyAttributes(instance, attributes);
         assertThat(instance.getInstanceId(), is("id"));
     }

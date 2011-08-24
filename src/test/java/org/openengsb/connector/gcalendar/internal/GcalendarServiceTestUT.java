@@ -20,19 +20,24 @@ package org.openengsb.connector.gcalendar.internal;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+import org.openengsb.core.api.ekb.EngineeringKnowledgeBaseService;
+import org.openengsb.domain.appointment.AppointmentDomainEvents;
 import org.openengsb.domain.appointment.models.Appointment;
 
 public class GcalendarServiceTestUT {
-    private GcalendarServiceImpl service;
+    private static GcalendarServiceImpl service;
     private static ArrayList<Appointment> appointments;
     private static final String USERNAME = "openengsb.notification.test@gmail.com";
     private static final String PASSWORD = "pwd-openengsb";
@@ -40,17 +45,25 @@ public class GcalendarServiceTestUT {
     @BeforeClass
     public static void initiate() {
         appointments = new ArrayList<Appointment>();
-    }
-
-    @Before
-    public void setup() {
         service = new GcalendarServiceImpl("id");
         service.setGoogleUser(USERNAME);
         service.setGooglePassword(PASSWORD);
+        
+        EngineeringKnowledgeBaseService ekbService = mock(EngineeringKnowledgeBaseService.class);
+        doAnswer(new Answer<Object>() {
+            public Object answer(InvocationOnMock invocation) {
+                return new TestAppointmentModel();
+            }
+        })
+            .when(ekbService).createEmptyModelObject(Appointment.class);
+        service.setEkbService(ekbService);
+        
+        AppointmentDomainEvents domainEvents = mock(AppointmentDomainEvents.class);
+        service.setAppointmentEvents(domainEvents);
     }
-
+    
     private Appointment createTestAppointment() {
-        Appointment a = new Appointment();
+        Appointment a = new TestAppointmentModel();
         a.setDescription("teststring");
         Calendar c = Calendar.getInstance();
         Date start = c.getTime();
@@ -127,10 +140,6 @@ public class GcalendarServiceTestUT {
 
     @AfterClass
     public static void cleanUp() {
-        GcalendarServiceImpl service = new GcalendarServiceImpl("id");
-        service.setGoogleUser(USERNAME);
-        service.setGooglePassword(PASSWORD);
-
         for (Appointment appointment : appointments) {
             service.deleteAppointment(appointment.getId());
         }
