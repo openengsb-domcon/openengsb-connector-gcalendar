@@ -27,8 +27,12 @@ import java.util.List;
 import org.openengsb.connector.gcalendar.internal.misc.AppointmentConverter;
 import org.openengsb.core.api.AliveState;
 import org.openengsb.core.api.DomainMethodExecutionException;
-import org.openengsb.core.common.AbstractOpenEngSBService;
+import org.openengsb.core.api.edb.EDBEventType;
+import org.openengsb.core.api.edb.EDBException;
+import org.openengsb.core.api.ekb.EngineeringKnowledgeBaseService;
+import org.openengsb.core.common.AbstractOpenEngSBConnectorService;
 import org.openengsb.domain.appointment.AppointmentDomain;
+import org.openengsb.domain.appointment.AppointmentDomainEvents;
 import org.openengsb.domain.appointment.models.Appointment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,9 +45,12 @@ import com.google.gdata.data.calendar.CalendarEventFeed;
 import com.google.gdata.util.AuthenticationException;
 import com.google.gdata.util.ServiceException;
 
-public class GcalendarServiceImpl extends AbstractOpenEngSBService implements AppointmentDomain {
+public class GcalendarServiceImpl extends AbstractOpenEngSBConnectorService implements AppointmentDomain {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GcalendarServiceImpl.class);
+
+    private AppointmentDomainEvents appointmentEvents;
+    private EngineeringKnowledgeBaseService ekbService;
 
     private AliveState state = AliveState.DISCONNECTED;
     private String googleUser;
@@ -69,6 +76,8 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBService implements Ap
             id = insertedEntry.getEditLink().getHref();
             LOGGER.info("Successfully created appointment {}", id);
             appointment.setId(id);
+
+            sendEvent(EDBEventType.INSERT, appointment);
         } catch (MalformedURLException e) {
             // should never be thrown since the URL is static
             throw new DomainMethodExecutionException("invalid URL", e);
@@ -90,6 +99,8 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBService implements Ap
         try {
             URL editUrl = new URL(entry.getEditLink().getHref());
             service.update(editUrl, entry);
+
+            sendEvent(EDBEventType.UPDATE, appointment);
         } catch (MalformedURLException e) {
             // should never be thrown since the url is provided by google
             throw new DomainMethodExecutionException("invalid URL", e);
@@ -106,11 +117,13 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBService implements Ap
     public void deleteAppointment(String id) {
         try {
             login();
-            Appointment appointment = new Appointment();
+            Appointment appointment = ekbService.createEmptyModelObject(Appointment.class);
             appointment.setId(id);
 
             CalendarEventEntry entry = getAppointmentEntry(appointment);
             entry.delete();
+
+            sendEvent(EDBEventType.DELETE, appointment);
         } catch (IOException e) {
             throw new DomainMethodExecutionException("unable to connect to google", e);
         } catch (ServiceException e) {
@@ -122,7 +135,7 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBService implements Ap
 
     @Override
     public Appointment loadAppointment(String id) {
-        Appointment appointment = new Appointment();
+        Appointment appointment = ekbService.createEmptyModelObject(Appointment.class);
         appointment.setId(id);
         CalendarEventEntry entry = getAppointmentEntry(appointment);
         return AppointmentConverter.convertCalendarEventEntryToAppointment(entry);
@@ -208,6 +221,18 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBService implements Ap
         }
     }
 
+    /**
+     * Sends a CUD event. The type is defined by the enumeration EDBEventType. Also the savingName, committer and the
+     * role are defined here.
+     */
+    private void sendEvent(EDBEventType type, Appointment appointment) {
+        try {
+            sendEDBEvent(type, appointment, appointmentEvents);
+        } catch (EDBException e) {
+            throw new DomainMethodExecutionException(e);
+        }
+    }
+
     public String getGooglePassword() {
         return googlePassword;
     }
@@ -222,5 +247,14 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBService implements Ap
 
     public void setGoogleUser(String googleUser) {
         this.googleUser = googleUser;
+    }
+
+    public void setAppointmentEvents(AppointmentDomainEvents appointmentEvents) {
+        this.appointmentEvents = appointmentEvents;
+    }
+    
+    public void setEkbService(EngineeringKnowledgeBaseService ekbService) {
+        this.ekbService = ekbService;
+        AppointmentConverter.setEkbService(ekbService);
     }
 }

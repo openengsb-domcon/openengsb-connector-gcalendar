@@ -20,6 +20,7 @@ package org.openengsb.connector.gcalendar.internal.misc;
 import java.util.Date;
 import java.util.TimeZone;
 
+import org.openengsb.core.api.ekb.EngineeringKnowledgeBaseService;
 import org.openengsb.domain.appointment.models.Appointment;
 
 import com.google.gdata.data.DateTime;
@@ -33,15 +34,17 @@ import com.google.gdata.data.extensions.Where;
  * domain
  */
 public final class AppointmentConverter {
+    
+    private static EngineeringKnowledgeBaseService ekbService;
 
     private AppointmentConverter() {
     }
-
+    
     /**
      * converts a calendar event entry to an appointment object
      */
     public static Appointment convertCalendarEventEntryToAppointment(CalendarEventEntry entry) {
-        Appointment appointment = new Appointment();
+        Appointment appointment = ekbService.createEmptyModelObject(Appointment.class);
         appointment.setId(entry.getEditLink().getHref());
         // in google multiple Locations can be set
         appointment.setLocation(entry.getLocations().get(0).getLabel());
@@ -88,5 +91,9 @@ public final class AppointmentConverter {
         entry.addTime(eventTimes);
 
         return entry;
+    }
+    
+    public static void setEkbService(EngineeringKnowledgeBaseService ekbService) {
+        AppointmentConverter.ekbService = ekbService;
     }
 }
