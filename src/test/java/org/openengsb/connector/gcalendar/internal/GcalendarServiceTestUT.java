@@ -20,7 +20,6 @@ package org.openengsb.connector.gcalendar.internal;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
@@ -30,9 +29,7 @@ import java.util.Date;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-import org.openengsb.core.api.ekb.EngineeringKnowledgeBaseService;
+import org.openengsb.core.common.util.ModelUtils;
 import org.openengsb.domain.appointment.AppointmentDomainEvents;
 import org.openengsb.domain.appointment.models.Appointment;
 
@@ -49,21 +46,12 @@ public class GcalendarServiceTestUT {
         service.setGoogleUser(USERNAME);
         service.setGooglePassword(PASSWORD);
         
-        EngineeringKnowledgeBaseService ekbService = mock(EngineeringKnowledgeBaseService.class);
-        doAnswer(new Answer<Object>() {
-            public Object answer(InvocationOnMock invocation) {
-                return new TestAppointmentModel();
-            }
-        })
-            .when(ekbService).createEmptyModelObject(Appointment.class);
-        service.setEkbService(ekbService);
-        
         AppointmentDomainEvents domainEvents = mock(AppointmentDomainEvents.class);
         service.setAppointmentEvents(domainEvents);
     }
     
     private Appointment createTestAppointment() {
-        Appointment a = new TestAppointmentModel();
+        Appointment a = ModelUtils.createEmptyModelObject(Appointment.class);
         a.setDescription("teststring");
         Calendar c = Calendar.getInstance();
         Date start = c.getTime();

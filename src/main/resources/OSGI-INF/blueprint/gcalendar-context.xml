@@ -31,7 +31,6 @@
     </service-properties>
     <bean class="org.openengsb.connector.gcalendar.internal.GcalendarServiceInstanceFactory">
       <property name="appointmentEvents" ref="appointmentEvents" />
-      <property name="ekbService" ref="ekbService" />
     </bean>
   </service>
 
@@ -50,6 +49,5 @@
   </service>
   
   <reference id="appointmentEvents" interface="org.openengsb.domain.appointment.AppointmentDomainEvents" />
-  <reference id="ekbService" interface="org.openengsb.core.api.ekb.EngineeringKnowledgeBaseService" />
 
 </blueprint>

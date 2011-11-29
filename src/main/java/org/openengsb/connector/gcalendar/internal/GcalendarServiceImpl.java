@@ -29,8 +29,8 @@ import org.openengsb.core.api.AliveState;
 import org.openengsb.core.api.DomainMethodExecutionException;
 import org.openengsb.core.api.edb.EDBEventType;
 import org.openengsb.core.api.edb.EDBException;
-import org.openengsb.core.api.ekb.EngineeringKnowledgeBaseService;
 import org.openengsb.core.common.AbstractOpenEngSBConnectorService;
+import org.openengsb.core.common.util.ModelUtils;
 import org.openengsb.domain.appointment.AppointmentDomain;
 import org.openengsb.domain.appointment.AppointmentDomainEvents;
 import org.openengsb.domain.appointment.models.Appointment;
@@ -50,7 +50,6 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBConnectorService impl
     private static final Logger LOGGER = LoggerFactory.getLogger(GcalendarServiceImpl.class);
 
     private AppointmentDomainEvents appointmentEvents;
-    private EngineeringKnowledgeBaseService ekbService;
 
     private AliveState state = AliveState.DISCONNECTED;
     private String googleUser;
@@ -117,7 +116,7 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBConnectorService impl
     public void deleteAppointment(String id) {
         try {
             login();
-            Appointment appointment = ekbService.createEmptyModelObject(Appointment.class);
+            Appointment appointment = ModelUtils.createEmptyModelObject(Appointment.class);
             appointment.setId(id);
 
             CalendarEventEntry entry = getAppointmentEntry(appointment);
@@ -135,7 +134,7 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBConnectorService impl
 
     @Override
     public Appointment loadAppointment(String id) {
-        Appointment appointment = ekbService.createEmptyModelObject(Appointment.class);
+        Appointment appointment = ModelUtils.createEmptyModelObject(Appointment.class);
         appointment.setId(id);
         CalendarEventEntry entry = getAppointmentEntry(appointment);
         return AppointmentConverter.convertCalendarEventEntryToAppointment(entry);
@@ -251,10 +250,5 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBConnectorService impl
 
     public void setAppointmentEvents(AppointmentDomainEvents appointmentEvents) {
         this.appointmentEvents = appointmentEvents;
-    }
-    
-    public void setEkbService(EngineeringKnowledgeBaseService ekbService) {
-        this.ekbService = ekbService;
-        AppointmentConverter.setEkbService(ekbService);
     }
 }
