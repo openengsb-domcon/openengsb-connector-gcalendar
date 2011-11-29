@@ -22,10 +22,10 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://karaf.apache.org/xmlns/features/v1.0.0 http://karaf.apache.org/xmlns/features/v1.0.0" >
   <feature name="openengsb-connector-gcalendar" version="${project.version}">
-    <feature version="${openengsb.version.range}">openengsb-core</feature>
+    <feature version="${openengsb.version.range}">openengsb-framework</feature>
     <feature version="${openengsb.domain.range}">openengsb-domain-appointment</feature>
     <bundle>mvn:org.openengsb.wrapped/com.google.gdata/${google.gdata.wrapped.version}</bundle>
-    <bundle>mvn:org.openengsb.connector/openengsb-connector-gcalendar/${project.version}</bundle>
+    <bundle>mvn:org.openengsb.connector/org.openengsb.connector.gcalendar/${project.version}</bundle>
   </feature>
 </features>
 
