@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import org.openengsb.core.common.util.ModelUtils;
-import org.openengsb.domain.appointment.models.Appointment;
+import org.openengsb.domain.appointment.Appointment;
 
 import com.google.gdata.data.DateTime;
 import com.google.gdata.data.TextConstruct;

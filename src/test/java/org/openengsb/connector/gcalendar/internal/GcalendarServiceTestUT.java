@@ -30,8 +30,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openengsb.core.common.util.ModelUtils;
+import org.openengsb.domain.appointment.Appointment;
 import org.openengsb.domain.appointment.AppointmentDomainEvents;
-import org.openengsb.domain.appointment.models.Appointment;
 
 public class GcalendarServiceTestUT {
     private static GcalendarServiceImpl service;

@@ -31,9 +31,9 @@ import org.openengsb.core.api.edb.EDBEventType;
 import org.openengsb.core.api.edb.EDBException;
 import org.openengsb.core.common.AbstractOpenEngSBConnectorService;
 import org.openengsb.core.common.util.ModelUtils;
+import org.openengsb.domain.appointment.Appointment;
 import org.openengsb.domain.appointment.AppointmentDomain;
 import org.openengsb.domain.appointment.AppointmentDomainEvents;
-import org.openengsb.domain.appointment.models.Appointment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
