@@ -20,7 +20,7 @@
 <book xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"
   xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
   <info>
-    <title>OpenEngSB Email Connector Manual</title>
+    <title>OpenEngSB gcalendar Connector Manual</title>
     <copyright>
       <year>2009</year>
       <year>2010</year>
