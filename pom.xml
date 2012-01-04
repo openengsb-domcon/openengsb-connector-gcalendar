@@ -158,17 +158,6 @@
   </dependencies>
 
   <repositories>
-    <repository>
-      <id>central</id>
-      <url>http://repo1.maven.org/maven2</url>
-    </repository>
-    <repository>
-      <id>mandubian-mvn</id>
-      <url>http://mandubian-mvn.googlecode.com/svn/trunk/mandubian-mvn/repository</url>
-    </repository>
-  </repositories>
-
-  <repositories>
     <repository> <!-- OEB snapshots are deployed here -->
      <id>sonatype-snapshots</id>
       <name>Sonaype Snapsht Repository</name>
@@ -179,6 +168,14 @@
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
+    </repository>
+    <repository>
+      <id>central</id>
+      <url>http://repo1.maven.org/maven2</url>
+    </repository>
+    <repository>
+      <id>mandubian-mvn</id>
+      <url>http://mandubian-mvn.googlecode.com/svn/trunk/mandubian-mvn/repository</url>
     </repository>
   </repositories>
 
