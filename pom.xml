@@ -34,7 +34,7 @@
     <google.calendar.version>1.41.5</google.calendar.version>
     <google.gdata.wrapped.version>1.41.5.w1</google.gdata.wrapped.version>
     <openengsb.domain.version>2.0.0</openengsb.domain.version>
-    <openengsb.domain.range>[2.0,2.1)</openengsb.domain.range>
+    <openengsb.domain.range>[2.0,3)</openengsb.domain.range>
     <openengsb.framework.version>2.1.2</openengsb.framework.version>
   </properties>
 
