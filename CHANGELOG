@@ -1,3 +1,30 @@
+openengsb-connector-gcontact-2.0.0 2012-01-11
+---------------------------------------------------------------------
+
+In this release all all interfaces and implementations have been adapted to the latest 
+domain/openengsb versions. In addition EDB/EKB access has been implemented.
+
+** Bug
+    * [OPENENGSB-2316] - adapt gcalendar connector to current openengsb-framework
+    * [OPENENGSB-2582] - Domains and Connectors need to include our snapshot repo to work with deployed snapshots correctly
+    * [OPENENGSB-2647] - domain.version.range does not follow semantic versioning
+
+** Improvement
+    * [OPENENGSB-1754] - Enhance gcalendar with EDB access
+    * [OPENENGSB-2577] - add short description to connector-manual
+    * [OPENENGSB-2586] - Include issuetracker, buildserver and inceptionYear from root
+
+** Library Upgrade
+    * [OPENENGSB-2639] - Upgrade domain-appointment to 2.0.0
+
+** Task
+    * [OPENENGSB-2567] - move connector documentation to corresponding connector-repositories
+    * [OPENENGSB-2568] - adapt connector to new flat package structure
+    * [OPENENGSB-2651] - release connector-gcalendar-2.0.0
+    * [OPENENGSB-2660] - Rename CHANGELOG.md to CHANGELOG
+    * [OPENENGSB-2661] - use openengsb-connector-parent-2.4.0
+
+
 openengsb-connector-gcontact-1.2.1 2011-05-23
 ---------------------------------------------------------------------
 
