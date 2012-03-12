@@ -25,7 +25,7 @@
   <parent>
     <groupId>org.openengsb.connector</groupId>
     <artifactId>openengsb-connector-parent</artifactId>
-    <version>2.4.0</version>
+    <version>3.0.0-SNAPSHOT</version>
   </parent>
 
   <properties>
@@ -33,14 +33,14 @@
     <bundle.namespace>org.openengsb.connector.gcalendar</bundle.namespace>
     <google.calendar.version>1.41.5</google.calendar.version>
     <google.gdata.wrapped.version>1.41.5.w1</google.gdata.wrapped.version>
-    <openengsb.domain.version>2.0.0</openengsb.domain.version>
-    <openengsb.domain.range>[2.0,3)</openengsb.domain.range>
-    <openengsb.framework.version>2.1.2</openengsb.framework.version>
+    <openengsb.domain.version>3.0.0-SNAPSHOT</openengsb.domain.version>
+    <openengsb.domain.range>[3.0,4)</openengsb.domain.range>
+    <openengsb.framework.version>3.0.0-SNAPSHOT</openengsb.framework.version>
   </properties>
 
   <groupId>org.openengsb.connector</groupId>
   <artifactId>org.openengsb.connector.gcalendar</artifactId>
-  <version>2.1.0-SNAPSHOT</version>
+  <version>3.0.0-SNAPSHOT</version>
 
   <name>OpenEngSB :: Connector :: Gcalendar</name>
 
