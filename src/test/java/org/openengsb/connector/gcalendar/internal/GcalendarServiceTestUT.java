@@ -29,9 +29,9 @@ import java.util.Date;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.openengsb.core.api.ekb.PersistInterface;
 import org.openengsb.core.common.util.ModelUtils;
 import org.openengsb.domain.appointment.Appointment;
-import org.openengsb.domain.appointment.AppointmentDomainEvents;
 
 public class GcalendarServiceTestUT {
     private static GcalendarServiceImpl service;
@@ -46,8 +46,8 @@ public class GcalendarServiceTestUT {
         service.setGoogleUser(USERNAME);
         service.setGooglePassword(PASSWORD);
         
-        AppointmentDomainEvents domainEvents = mock(AppointmentDomainEvents.class);
-        service.setAppointmentEvents(domainEvents);
+        PersistInterface persistInterface = mock(PersistInterface.class);
+        service.setPersistInterface(persistInterface);
     }
     
     private Appointment createTestAppointment() {

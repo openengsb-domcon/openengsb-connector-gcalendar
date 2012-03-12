@@ -30,7 +30,7 @@
       <entry key="connector" value="gcalendar" />
     </service-properties>
     <bean class="org.openengsb.connector.gcalendar.internal.GcalendarServiceInstanceFactory">
-      <property name="appointmentEvents" ref="appointmentEvents" />
+      <property name="persistInterface" ref="persistInterface" />
     </bean>
   </service>
 
@@ -48,6 +48,6 @@
     </bean>
   </service>
   
-  <reference id="appointmentEvents" interface="org.openengsb.domain.appointment.AppointmentDomainEvents" />
+  <reference id="persistInterface" interface="org.openengsb.core.api.ekb.PersistInterface" />
 
 </blueprint>

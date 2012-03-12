@@ -20,17 +20,17 @@ package org.openengsb.connector.gcalendar.internal;
 import java.util.Map;
 
 import org.openengsb.core.api.Connector;
+import org.openengsb.core.api.ekb.PersistInterface;
 import org.openengsb.core.common.AbstractConnectorInstanceFactory;
-import org.openengsb.domain.appointment.AppointmentDomainEvents;
 
 public class GcalendarServiceInstanceFactory extends AbstractConnectorInstanceFactory<GcalendarServiceImpl> {
 
-    private AppointmentDomainEvents appointmentEvents;
+    private PersistInterface persistInterface;
 
     @Override
     public Connector createNewInstance(String id) {
         GcalendarServiceImpl service = new GcalendarServiceImpl(id);
-        service.setAppointmentEvents(appointmentEvents);
+        service.setPersistInterface(persistInterface);
         return service;
     }
 
@@ -40,7 +40,7 @@ public class GcalendarServiceInstanceFactory extends AbstractConnectorInstanceFa
         instance.setGooglePassword(attributes.get("google.password"));
     }
 
-    public void setAppointmentEvents(AppointmentDomainEvents appointmentEvents) {
-        this.appointmentEvents = appointmentEvents;
+    public void setPersistInterface(PersistInterface persistInterface) {
+        this.persistInterface = persistInterface;
     }
 }

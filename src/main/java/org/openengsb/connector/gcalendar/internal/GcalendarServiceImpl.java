@@ -27,13 +27,12 @@ import java.util.List;
 import org.openengsb.connector.gcalendar.internal.misc.AppointmentConverter;
 import org.openengsb.core.api.AliveState;
 import org.openengsb.core.api.DomainMethodExecutionException;
-import org.openengsb.core.api.edb.EDBEventType;
-import org.openengsb.core.api.edb.EDBException;
+import org.openengsb.core.api.ekb.EKBCommit;
+import org.openengsb.core.api.ekb.PersistInterface;
 import org.openengsb.core.common.AbstractOpenEngSBConnectorService;
 import org.openengsb.core.common.util.ModelUtils;
 import org.openengsb.domain.appointment.Appointment;
 import org.openengsb.domain.appointment.AppointmentDomain;
-import org.openengsb.domain.appointment.AppointmentDomainEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +48,7 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBConnectorService impl
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GcalendarServiceImpl.class);
 
-    private AppointmentDomainEvents appointmentEvents;
+    private PersistInterface persistInterface;
 
     private AliveState state = AliveState.DISCONNECTED;
     private String googleUser;
@@ -76,7 +75,8 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBConnectorService impl
             LOGGER.info("Successfully created appointment {}", id);
             appointment.setId(id);
 
-            sendEvent(EDBEventType.INSERT, appointment);
+            EKBCommit commit = createEKBCommit().addInsert(appointment);
+            persistInterface.commit(commit);
         } catch (MalformedURLException e) {
             // should never be thrown since the URL is static
             throw new DomainMethodExecutionException("invalid URL", e);
@@ -99,7 +99,8 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBConnectorService impl
             URL editUrl = new URL(entry.getEditLink().getHref());
             service.update(editUrl, entry);
 
-            sendEvent(EDBEventType.UPDATE, appointment);
+            EKBCommit commit = createEKBCommit().addUpdate(appointment);
+            persistInterface.commit(commit);
         } catch (MalformedURLException e) {
             // should never be thrown since the url is provided by google
             throw new DomainMethodExecutionException("invalid URL", e);
@@ -122,7 +123,8 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBConnectorService impl
             CalendarEventEntry entry = getAppointmentEntry(appointment);
             entry.delete();
 
-            sendEvent(EDBEventType.DELETE, appointment);
+            EKBCommit commit = createEKBCommit().addDelete(appointment);
+            persistInterface.commit(commit);
         } catch (IOException e) {
             throw new DomainMethodExecutionException("unable to connect to google", e);
         } catch (ServiceException e) {
@@ -220,18 +222,6 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBConnectorService impl
         }
     }
 
-    /**
-     * Sends a CUD event. The type is defined by the enumeration EDBEventType. Also the savingName, committer and the
-     * role are defined here.
-     */
-    private void sendEvent(EDBEventType type, Appointment appointment) {
-        try {
-            sendEDBEvent(type, appointment, appointmentEvents);
-        } catch (EDBException e) {
-            throw new DomainMethodExecutionException(e);
-        }
-    }
-
     public String getGooglePassword() {
         return googlePassword;
     }
@@ -248,7 +238,7 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBConnectorService impl
         this.googleUser = googleUser;
     }
 
-    public void setAppointmentEvents(AppointmentDomainEvents appointmentEvents) {
-        this.appointmentEvents = appointmentEvents;
+    public void setPersistInterface(PersistInterface persistInterface) {
+        this.persistInterface = persistInterface;
     }
 }
