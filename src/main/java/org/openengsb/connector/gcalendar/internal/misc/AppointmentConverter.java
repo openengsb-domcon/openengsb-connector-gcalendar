@@ -44,13 +44,11 @@ public final class AppointmentConverter {
         Appointment appointment = ModelUtils.createEmptyModelObject(Appointment.class);
         appointment.setId(entry.getEditLink().getHref());
         // in google multiple Locations can be set
-        appointment.setLocation(entry.getLocations().get(0).getLabel());
+        appointment.setLocation(entry.getLocations().get(0).getValueString());
         appointment.setName(entry.getTitle().getPlainText());
         appointment.setDescription(entry.getPlainTextContent());
         for (When time : entry.getTimes()) {
-            if (time.getStartTime().isDateOnly()) {
-                appointment.setFullDay(true);
-            }
+            appointment.setFullDay(time.getStartTime().isDateOnly());
             appointment.setStart(new Date(time.getStartTime().getValue()));
             appointment.setEnd(new Date(time.getEndTime().getValue()));
             break;
