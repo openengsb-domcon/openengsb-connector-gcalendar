@@ -91,6 +91,9 @@ public final class AppointmentConverter {
         return entry;
     }
     
+    /**
+     * update the location of a given CalendarEventEntry from the given Appointment
+     */
     private static CalendarEventEntry extendCalendarEventEntryWhere(CalendarEventEntry entry, Appointment appointment) {
         Where eventLocation;
 
