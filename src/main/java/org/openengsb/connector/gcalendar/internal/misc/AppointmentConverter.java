@@ -17,6 +17,7 @@
 
 package org.openengsb.connector.gcalendar.internal.misc;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -44,17 +45,25 @@ public final class AppointmentConverter {
         Appointment appointment = ModelUtils.createEmptyModelObject(Appointment.class);
         appointment.setId(entry.getEditLink().getHref());
         // in google multiple Locations can be set
-        appointment.setLocation(entry.getLocations().get(0).getLabel());
+        appointment.setLocation(entry.getLocations().get(0).getValueString());
         appointment.setName(entry.getTitle().getPlainText());
         appointment.setDescription(entry.getPlainTextContent());
+        
         for (When time : entry.getTimes()) {
-            if (time.getStartTime().isDateOnly()) {
-                appointment.setFullDay(true);
+            appointment.setFullDay(time.getStartTime().isDateOnly());
+            
+            Date start = new Date(time.getStartTime().getValue());
+            Date end = new Date(time.getEndTime().getValue());
+            
+            if(appointment.getFullDay()) {
+                start = trimTime(start, TimeZone.getDefault());
+                end = trimTime(end, TimeZone.getDefault());
             }
-            appointment.setStart(new Date(time.getStartTime().getValue()));
-            appointment.setEnd(new Date(time.getEndTime().getValue()));
+            appointment.setStart(start);
+            appointment.setEnd(end);
             break;
         }
+        
         return appointment;
     }
 
@@ -73,20 +82,83 @@ public final class AppointmentConverter {
             Appointment appointment) {
         entry.setId(appointment.getId());
 
-        Where eventLocation = new Where();
-        eventLocation.setValueString(appointment.getLocation());
-        entry.addLocation(eventLocation);
-
         entry.setTitle(TextConstruct.plainText(appointment.getName()));
         entry.setContent(TextConstruct.plainText(appointment.getDescription()));
-
-        DateTime startTime = new DateTime(appointment.getStart(), TimeZone.getDefault());
-        DateTime endTime = new DateTime(appointment.getEnd(), TimeZone.getDefault());
-        When eventTimes = new When();
-        eventTimes.setStartTime(startTime);
-        eventTimes.setEndTime(endTime);
-        entry.addTime(eventTimes);
+        
+        extendCalendarEventEntryWhere(entry, appointment);
+        extendCalendarEventEntryWhen(entry, appointment);
 
         return entry;
+    }
+    
+    /**
+     * update the location of a given CalendarEventEntry from the given Appointment
+     */
+    private static CalendarEventEntry extendCalendarEventEntryWhere(CalendarEventEntry entry, Appointment appointment) {
+        Where eventLocation;
+
+        if (!entry.getLocations().isEmpty()) {
+            eventLocation = entry.getLocations().get(0);
+        }
+        else {
+            eventLocation = new Where();
+            entry.addLocation(eventLocation);
+        }
+
+        eventLocation.setValueString(appointment.getLocation());
+
+        return entry;
+    }
+    
+    /**
+     * updates the start and end times of a given CalendarEventEntry from the given Appointment
+     */
+    private static CalendarEventEntry extendCalendarEventEntryWhen(CalendarEventEntry entry, Appointment appointment) {
+        DateTime startTime;
+        DateTime endTime;
+
+        if (appointment.getFullDay() == null || !appointment.getFullDay()) {
+            startTime = new DateTime(appointment.getStart(), TimeZone.getDefault());
+            endTime = new DateTime(appointment.getEnd(), TimeZone.getDefault());
+        }
+        else {
+            startTime = new DateTime(trimTime(appointment.getStart(), TimeZone.getTimeZone("UTC")));
+            endTime = new DateTime(trimTime(appointment.getEnd(), TimeZone.getTimeZone("UTC")));
+
+            startTime.setDateOnly(true);
+            endTime.setDateOnly(true);
+        }
+
+        When eventTimes;
+        if (!entry.getTimes().isEmpty()) {
+            eventTimes = entry.getTimes().get(0);
+        }
+        else {
+            eventTimes = new When();
+            entry.addTime(eventTimes);
+        }
+
+        eventTimes.setStartTime(startTime);
+        eventTimes.setEndTime(endTime);
+
+        return entry;
+    }
+
+    /**
+     * sets the time information of a given Date to midnight in the given time zone 
+     */
+    private static Date trimTime(Date date, TimeZone tz) {
+        Calendar cal = Calendar.getInstance();
+
+        cal.setTime(date);
+
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        
+        cal.setTimeZone(tz);
+
+        return cal.getTime();
     }
 }
