@@ -82,13 +82,27 @@ public final class AppointmentConverter {
             Appointment appointment) {
         entry.setId(appointment.getId());
 
-        Where eventLocation = new Where();
-        eventLocation.setValueString(appointment.getLocation());
-
         entry.setTitle(TextConstruct.plainText(appointment.getName()));
         entry.setContent(TextConstruct.plainText(appointment.getDescription()));
-
+        
+        extendCalendarEventEntryWhere(entry, appointment);
         extendCalendarEventEntryWhen(entry, appointment);
+
+        return entry;
+    }
+    
+    private static CalendarEventEntry extendCalendarEventEntryWhere(CalendarEventEntry entry, Appointment appointment) {
+        Where eventLocation;
+
+        if (!entry.getLocations().isEmpty()) {
+            eventLocation = entry.getLocations().get(0);
+        }
+        else {
+            eventLocation = new Where();
+            entry.addLocation(eventLocation);
+        }
+
+        eventLocation.setValueString(appointment.getLocation());
 
         return entry;
     }
