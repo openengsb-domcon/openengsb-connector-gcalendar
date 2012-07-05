@@ -30,7 +30,6 @@ import org.openengsb.core.api.DomainMethodExecutionException;
 import org.openengsb.core.api.ekb.EKBCommit;
 import org.openengsb.core.api.ekb.PersistInterface;
 import org.openengsb.core.common.AbstractOpenEngSBConnectorService;
-import org.openengsb.core.common.util.ModelUtils;
 import org.openengsb.domain.appointment.Appointment;
 import org.openengsb.domain.appointment.AppointmentDomain;
 import org.slf4j.Logger;
@@ -117,7 +116,7 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBConnectorService impl
     public void deleteAppointment(String id) {
         try {
             login();
-            Appointment appointment = ModelUtils.createEmptyModelObject(Appointment.class);
+            Appointment appointment = new Appointment();
             appointment.setId(id);
 
             CalendarEventEntry entry = getAppointmentEntry(appointment);
@@ -136,7 +135,7 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBConnectorService impl
 
     @Override
     public Appointment loadAppointment(String id) {
-        Appointment appointment = ModelUtils.createEmptyModelObject(Appointment.class);
+        Appointment appointment = new Appointment();
         appointment.setId(id);
         CalendarEventEntry entry = getAppointmentEntry(appointment);
         return AppointmentConverter.convertCalendarEventEntryToAppointment(entry);

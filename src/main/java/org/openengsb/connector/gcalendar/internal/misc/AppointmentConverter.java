@@ -21,7 +21,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.openengsb.core.common.util.ModelUtils;
 import org.openengsb.domain.appointment.Appointment;
 
 import com.google.gdata.data.DateTime;
@@ -42,7 +41,7 @@ public final class AppointmentConverter {
      * converts a calendar event entry to an appointment object
      */
     public static Appointment convertCalendarEventEntryToAppointment(CalendarEventEntry entry) {
-        Appointment appointment = ModelUtils.createEmptyModelObject(Appointment.class);
+        Appointment appointment = new Appointment();
         appointment.setId(entry.getEditLink().getHref());
         // in google multiple Locations can be set
         appointment.setLocation(entry.getLocations().get(0).getValueString());

@@ -34,7 +34,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openengsb.core.api.ekb.PersistInterface;
-import org.openengsb.core.common.util.ModelUtils;
 import org.openengsb.domain.appointment.Appointment;
 
 public class GcalendarServiceTestUT {
@@ -58,11 +57,11 @@ public class GcalendarServiceTestUT {
     }
 
     private Appointment createTestAppointment() {
-        Appointment a = ModelUtils.createEmptyModelObject(Appointment.class);
+        Appointment appointment = new Appointment();
 
-        a.setName("Breakfast at Tiffanys");
-        a.setLocation("Tiffanys");
-        a.setDescription("Breakfast");
+        appointment.setName("Breakfast at Tiffanys");
+        appointment.setLocation("Tiffanys");
+        appointment.setDescription("Breakfast");
 
         Calendar cal = Calendar.getInstance();
         Date start;
@@ -72,47 +71,47 @@ public class GcalendarServiceTestUT {
         cal.add(Calendar.HOUR_OF_DAY, 2);
         end = cal.getTime();
 
-        a.setStart(start);
-        a.setEnd(end);
+        appointment.setStart(start);
+        appointment.setEnd(end);
 
-        return a;
+        return appointment;
     }
 
     @Test
     public void testCreateAppointment() {
-        Appointment a = createTestAppointment();
-        service.createAppointment(a);
+        Appointment appointment = createTestAppointment();
+        service.createAppointment(appointment);
 
-        assertNotNull(a.getId());
-        appointments.add(a);
+        assertNotNull(appointment.getId());
+        appointments.add(appointment);
     }
 
     @Test
     public void testLoadAppointment() {
-        Appointment a = createTestAppointment();
+        Appointment appointment = createTestAppointment();
 
-        String id = service.createAppointment(a);
-        appointments.add(a);
+        String id = service.createAppointment(appointment);
+        appointments.add(appointment);
 
-        a = service.loadAppointment(id);
+        appointment = service.loadAppointment(id);
 
-        assertEquals(id, a.getId());
-        assertEquals("Breakfast at Tiffanys", a.getName());
-        assertEquals("Tiffanys", a.getLocation());
-        assertEquals("Breakfast", a.getDescription());
+        assertEquals(id, appointment.getId());
+        assertEquals("Breakfast at Tiffanys", appointment.getName());
+        assertEquals("Tiffanys", appointment.getLocation());
+        assertEquals("Breakfast", appointment.getDescription());
     }
 
     @Test
     public void testDeleteAppointment() {
-        Appointment a = createTestAppointment();
+        Appointment appointment = createTestAppointment();
 
-        service.createAppointment(a);
+        service.createAppointment(appointment);
 
-        service.deleteAppointment(a.getId());
+        service.deleteAppointment(appointment.getId());
 
         boolean testFail = true;
         try {
-            service.loadAppointment(a.getId());
+            service.loadAppointment(appointment.getId());
         } catch (Exception e) {
             testFail = false;
         }
@@ -124,123 +123,123 @@ public class GcalendarServiceTestUT {
 
     @Test
     public void testSingleFullDayAppointment() throws Exception {
-        Appointment a = createTestAppointment();
+        Appointment appointment = createTestAppointment();
 
-        a.setStart(dateFormat.parse("01.01.2000"));
-        a.setEnd(dateFormat.parse("02.01.2000"));
-        a.setFullDay(true);
+        appointment.setStart(dateFormat.parse("01.01.2000"));
+        appointment.setEnd(dateFormat.parse("02.01.2000"));
+        appointment.setFullDay(true);
 
-        String id = service.createAppointment(a);
-        appointments.add(a);
+        String id = service.createAppointment(appointment);
+        appointments.add(appointment);
 
-        a = service.loadAppointment(id);
+        appointment = service.loadAppointment(id);
 
         String expectedStart = "01.01.2000 00:00";
         String expectedEnd = "02.01.2000 00:00";
 
-        assertEquals(true, a.getFullDay());
-        assertEquals(expectedStart, dateTimeFormat.format(a.getStart()));
-        assertEquals(expectedEnd, dateTimeFormat.format(a.getEnd()));
+        assertEquals(true, appointment.getFullDay());
+        assertEquals(expectedStart, dateTimeFormat.format(appointment.getStart()));
+        assertEquals(expectedEnd, dateTimeFormat.format(appointment.getEnd()));
     }
 
     @Test
     public void testMultiFullDayAppointment() throws Exception {
-        Appointment a = createTestAppointment();
+        Appointment appointment = createTestAppointment();
 
-        a.setStart(dateFormat.parse("30.01.1999"));
-        a.setEnd(dateFormat.parse("02.01.2000"));
-        a.setFullDay(true);
+        appointment.setStart(dateFormat.parse("30.01.1999"));
+        appointment.setEnd(dateFormat.parse("02.01.2000"));
+        appointment.setFullDay(true);
 
-        String id = service.createAppointment(a);
-        appointments.add(a);
+        String id = service.createAppointment(appointment);
+        appointments.add(appointment);
 
-        a = service.loadAppointment(id);
+        appointment = service.loadAppointment(id);
 
         String expectedStart = "30.01.1999 00:00";
         String expectedEnd = "02.01.2000 00:00";
 
-        assertEquals(true, a.getFullDay());
-        assertEquals(expectedStart, dateTimeFormat.format(a.getStart()));
-        assertEquals(expectedEnd, dateTimeFormat.format(a.getEnd()));
+        assertEquals(true, appointment.getFullDay());
+        assertEquals(expectedStart, dateTimeFormat.format(appointment.getStart()));
+        assertEquals(expectedEnd, dateTimeFormat.format(appointment.getEnd()));
     }
 
     @Test
     public void testUpdateAppointmentDetails() {
-        Appointment a = createTestAppointment();
+        Appointment appointment = createTestAppointment();
 
-        String id = service.createAppointment(a);
-        appointments.add(a);
+        String id = service.createAppointment(appointment);
+        appointments.add(appointment);
 
         String newName = "Lunch at Bettys";
         String newLocation = "Bettys";
         String newDescription = "Lunch";
 
-        a.setName(newName);
-        a.setLocation(newLocation);
-        a.setDescription(newDescription);
+        appointment.setName(newName);
+        appointment.setLocation(newLocation);
+        appointment.setDescription(newDescription);
 
-        service.updateAppointment(a);
+        service.updateAppointment(appointment);
 
-        a = service.loadAppointment(a.getId());
-        assertEquals(id, a.getId());
-        assertEquals(newName, a.getName());
-        assertEquals(newLocation, a.getLocation());
-        assertEquals(newDescription, a.getDescription());
+        appointment = service.loadAppointment(appointment.getId());
+        assertEquals(id, appointment.getId());
+        assertEquals(newName, appointment.getName());
+        assertEquals(newLocation, appointment.getLocation());
+        assertEquals(newDescription, appointment.getDescription());
     }
 
     @Test
     public void testUpdateAppointmentTime() throws Exception {
-        Appointment a = createTestAppointment();
+        Appointment appointment = createTestAppointment();
 
-        String id = service.createAppointment(a);
-        appointments.add(a);
+        String id = service.createAppointment(appointment);
+        appointments.add(appointment);
 
         Date newStartTime = dateTimeFormat.parse("01.01.2000 10:00");
         Date newEndTime = dateTimeFormat.parse("01.01.2000 12:00");
 
-        a.setStart(newStartTime);
-        a.setEnd(newEndTime);
+        appointment.setStart(newStartTime);
+        appointment.setEnd(newEndTime);
 
-        service.updateAppointment(a);
+        service.updateAppointment(appointment);
 
-        a = service.loadAppointment(id);
-        assertEquals(id, a.getId());
-        assertEquals(newStartTime, a.getStart());
-        assertEquals(newEndTime, a.getEnd());
+        appointment = service.loadAppointment(id);
+        assertEquals(id, appointment.getId());
+        assertEquals(newStartTime, appointment.getStart());
+        assertEquals(newEndTime, appointment.getEnd());
     }
 
     @Test
     public void testUpdateAppointmentToFullDay() throws Exception {
-        Appointment a = createTestAppointment();
+        Appointment appointment = createTestAppointment();
 
-        String id = service.createAppointment(a);
-        appointments.add(a);
+        String id = service.createAppointment(appointment);
+        appointments.add(appointment);
 
         Date newStartDate = dateFormat.parse("01.01.2000");
         Date newEndDate = dateFormat.parse("02.01.2000");
 
-        a.setStart(newStartDate);
-        a.setEnd(newEndDate);
-        a.setFullDay(true);
+        appointment.setStart(newStartDate);
+        appointment.setEnd(newEndDate);
+        appointment.setFullDay(true);
 
-        service.updateAppointment(a);
+        service.updateAppointment(appointment);
 
-        a = service.loadAppointment(id);
+        appointment = service.loadAppointment(id);
 
         String expectedStartDate = "01.01.2000";
         String expectedEndDate = "02.01.2000";
 
-        assertTrue(a.getFullDay());
-        assertEquals(expectedStartDate, dateFormat.format(a.getStart()));
-        assertEquals(expectedEndDate, dateFormat.format(a.getEnd()));
+        assertTrue(appointment.getFullDay());
+        assertEquals(expectedStartDate, dateFormat.format(appointment.getStart()));
+        assertEquals(expectedEndDate, dateFormat.format(appointment.getEnd()));
     }
 
     @Test
     public void testRetrievingAppointments() {
-        Appointment a = createTestAppointment();
+        Appointment appointment = createTestAppointment();
 
-        String id = service.createAppointment(a);
-        appointments.add(a);
+        String id = service.createAppointment(appointment);
+        appointments.add(appointment);
 
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DAY_OF_MONTH, -2);
