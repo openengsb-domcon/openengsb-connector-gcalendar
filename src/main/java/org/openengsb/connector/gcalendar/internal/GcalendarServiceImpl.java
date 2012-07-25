@@ -132,6 +132,12 @@ public class GcalendarServiceImpl extends AbstractOpenEngSBConnectorService impl
             this.state = AliveState.DISCONNECTED;
         }
     }
+    
+    private EKBCommit createEKBCommit() {
+        EKBCommit commit = new EKBCommit();
+        commit.setDomainId(domainId).setConnectorId(connectorId).setInstanceId(instanceId);
+        return commit;
+    }
 
     @Override
     public Appointment loadAppointment(String id) {
